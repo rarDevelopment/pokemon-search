@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PokemonListComponent } from './pokemon-list/pokemon-list.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { FilterPipe } from './filter.pipe';
 
 @NgModule({
@@ -22,6 +23,7 @@ import { FilterPipe } from './filter.pipe';
 		BrowserAnimationsModule,
 		MatTableModule,
 		MatButtonModule,
+		MatInputModule,
 		FormsModule
 	],
 	providers: [],

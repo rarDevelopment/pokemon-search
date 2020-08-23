@@ -1,6 +1,11 @@
 <h1>Pokémon List</h1>
 
-<input type="text" [(ngModel)]="searchText" autofocus />
+<form class="search-form">
+	<mat-form-field class="search-field">
+		<mat-label>Search: </mat-label>
+		<input name="search" matInput type="search" [(ngModel)]="searchText" autofocus />
+	</mat-form-field>
+</form>
 
 <table mat-table [dataSource]="pokemon | appFilter: searchText" class="mat-elevation-z8">
 	<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
@@ -15,12 +20,13 @@
 	</ng-container>
 	<ng-container matColumnDef="moveset-link">
 		<th mat-header-cell *matHeaderCellDef> Moveset Info </th>
-		<td mat-cell *matCellDef="let pokemon"> <a mat-stroked-button color="primary"
-				[href]="pokemon.movesetLink">Moveset</a> </td>
+		<td mat-cell *matCellDef="let pokemon"> <a mat-raised-button [href]="pokemon.movesetLink" target="_blank"
+				color="primary">Moveset Info</a>
+		</td>
 	</ng-container>
 	<ng-container matColumnDef="evolution-info">
 		<th mat-header-cell *matHeaderCellDef> Evolution Info </th>
-		<td mat-cell *matCellDef="let pokemon"> <a mat-stroked-button color="primary"
+		<td mat-cell *matCellDef="let pokemon"> <a mat-raised-button color="accent" target="_blank"
 				[href]="pokemon.evolutionLink">Evolution Info</a></td>
 	</ng-container>
 </table>
