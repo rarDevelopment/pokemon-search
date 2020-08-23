@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Pokemon } from '../../Pokemon';
+import { Pokemon } from 'src/Pokemon';
+import { PokeApiService } from 'src/app/poke-api.service';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -11,13 +12,13 @@ export class PokemonListComponent implements OnInit {
   pokemon: Pokemon[] = [];
   columnsToDisplay: string[] = ["number", "name", "moveset-link", "evolution-info"];
 
-  constructor() {
-    this.pokemon.push({ name: "Bulbsaur", number: 1, movesetLink: 'https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)#Learnset' } as Pokemon);
-    this.pokemon.push({ name: "Ivysaur", number: 2, movesetLink: 'https://bulbapedia.bulbagarden.net/wiki/Ivyasaur_(Pok%C3%A9mon)#Learnset' } as Pokemon);
-    this.pokemon.push({ name: "Venusaur", number: 3, movesetLink: 'https://bulbapedia.bulbagarden.net/wiki/Venusaur_(Pok%C3%A9mon)#Learnset' } as Pokemon);
+
+  constructor(private pokeApiService: PokeApiService) {
   }
 
   ngOnInit() {
+    this.pokeApiService.getAllPokemon().then((response) => {
+      this.pokemon = response[0];
+    });
   }
-
 }
