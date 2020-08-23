@@ -16,9 +16,15 @@ export class PokeApiService {
   }
 
   getAllPokemon() {
-    console.log("all pokemon", this.pokemon);
-    return this.api.getPokemonsList().then((response) => {
-      this.pokemon.push(response.results.map(p => this.buildPokemonFromData(p)));
+    return this.api.getPokemonSpeciesList().then((response) => {
+      console.log("species response", response);
+      this.pokemon.push(response.results.map(p => {
+
+        let urlSegments = p.url.split('/');
+        let number = urlSegments[urlSegments.length - 2];
+
+        return this.buildPokemonFromData(p.name, number)
+      }));
       return this.pokemon;
     });
   }
@@ -29,10 +35,10 @@ export class PokeApiService {
       });
   }
 
-  buildPokemonFromData(p) {
+  buildPokemonFromData(name, number: number) {
     return {
-      name: p.name,
-      number: 0,
+      name: name,
+      number: number,
       evolutionLink: "#",
       movesetLink: "#"
     } as Pokemon;
