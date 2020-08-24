@@ -1,32 +1,61 @@
 <h1>Pokémon List</h1>
+<div class="loading" *ngIf="isLoading">Loading...</div>
+<div class="container" *ngIf="!isLoading">
 
-<form class="search-form">
-	<mat-form-field class="search-field">
-		<mat-label>Search: </mat-label>
-		<input name="search" matInput type="search" [(ngModel)]="searchText" autofocus />
-	</mat-form-field>
-</form>
+    <mat-form-field appearance="fill">
+        <mat-label>Generation</mat-label>
+        <mat-select [(value)]="selectedGen">
+            <mat-option *ngFor="let gen of generationNumbers; let i = index" [value]="i+1">
+                {{i+1}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
 
-<table mat-table [dataSource]="pokemon | appFilter: searchText" class="mat-elevation-z8">
-	<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-	<tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
-	<ng-container matColumnDef="number">
-		<th mat-header-cell *matHeaderCellDef> Number </th>
-		<td mat-cell *matCellDef="let pokemon"> {{pokemon.number}} </td>
-	</ng-container>
-	<ng-container matColumnDef="name">
-		<th mat-header-cell *matHeaderCellDef> Name </th>
-		<td mat-cell *matCellDef="let pokemon"> {{pokemon.name}} </td>
-	</ng-container>
-	<ng-container matColumnDef="moveset-link">
-		<th mat-header-cell *matHeaderCellDef> Moveset Info </th>
-		<td mat-cell *matCellDef="let pokemon"> <a mat-raised-button [href]="pokemon.movesetLink" target="_blank"
-				color="primary">Moveset Info</a>
-		</td>
-	</ng-container>
-	<ng-container matColumnDef="evolution-info">
-		<th mat-header-cell *matHeaderCellDef> Evolution Info </th>
-		<td mat-cell *matCellDef="let pokemon"> <a mat-raised-button color="accent" target="_blank"
-				[href]="pokemon.evolutionLink">Evolution Info</a></td>
-	</ng-container>
-</table>
+    <form class="search-form">
+        <mat-form-field class="search-field">
+            <mat-label>Name or Number</mat-label>
+            <input name="search" matInput type="search" [(ngModel)]="searchText" autofocus />
+        </mat-form-field>
+    </form>
+
+    <table mat-table [dataSource]="pokemon | appFilter: searchText" class="mat-elevation-z8">
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+        <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let pokemon"><img width="50" height="50"
+                    [src]="'https://img.pokemondb.net/artwork/'+pokemon.name+'.jpg'" /></td>
+        </ng-container>
+        <ng-container matColumnDef="number">
+            <th mat-header-cell *matHeaderCellDef> Number </th>
+            <td mat-cell *matCellDef="let pokemon"> {{pokemon.number}} </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let pokemon"> {{pokemon.displayName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="evolution-link">
+            <th mat-header-cell *matHeaderCellDef> Evolution </th>
+            <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button color="primary" target="_blank"
+                    [href]="pokemon.evolutionUrls[selectedSite]">Evolution</a></td>
+        </ng-container>
+        <ng-container matColumnDef="location-link">
+            <th mat-header-cell *matHeaderCellDef> Location </th>
+            <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button [href]="pokemon.locationUrls[selectedSite]"
+                    target="_blank" color="accent">Location</a>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="effectiveness-link">
+            <th mat-header-cell *matHeaderCellDef> Effectiveness </th>
+            <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button
+                    [href]="pokemon.effectivenessUrls[selectedSite]" target="_blank" color="warn">Effectiveness</a>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="learnset-link">
+            <th mat-header-cell *matHeaderCellDef> Moveset </th>
+            <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button [href]="pokemon.learnsetUrls[selectedSite]"
+                    target="_blank" color="primary">Learnset</a>
+            </td>
+        </ng-container>
+    </table>
+</div>

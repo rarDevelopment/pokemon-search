@@ -9,6 +9,7 @@ import { PokemonListComponent } from './pokemon-list/pokemon-list.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { FilterPipe } from './filter.pipe';
 
 @NgModule({
@@ -21,10 +22,11 @@ import { FilterPipe } from './filter.pipe';
 		BrowserModule,
 		AppRoutingModule,
 		BrowserAnimationsModule,
+		FormsModule,
 		MatTableModule,
 		MatButtonModule,
 		MatInputModule,
-		FormsModule
+		MatSelectModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]
