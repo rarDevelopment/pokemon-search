@@ -2,14 +2,25 @@
 <div class="loading" *ngIf="isLoading">Loading...</div>
 <div class="container" *ngIf="!isLoading">
 
-    <mat-form-field appearance="fill">
-        <mat-label>Generation</mat-label>
-        <mat-select [(value)]="selectedGen">
-            <mat-option *ngFor="let gen of generationNumbers; let i = index" [value]="i+1">
-                {{i+1}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+    <form class="parameter-form">
+        <mat-form-field appearance="fill">
+            <mat-label>Generation</mat-label>
+            <mat-select [(value)]="selectedGen" (selectionChange)="loadPokemon()">
+                <mat-option *ngFor="let gen of generationNumbers; let i = index" [value]="i+1">
+                    {{i+1}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Site</mat-label>
+            <mat-select [(value)]="selectedSite">
+                <mat-option *ngFor="let site of availableSites;" [value]="site.name">
+                    {{site.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
 
     <form class="search-form">
         <mat-form-field class="search-field">

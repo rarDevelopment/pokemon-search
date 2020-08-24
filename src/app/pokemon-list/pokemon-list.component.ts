@@ -30,10 +30,13 @@ export class PokemonListComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loadPokemon();
+    }
+
+    loadPokemon() {
         this.isLoading = true;
         this.pokeApiService.getAllPokemon().then((response) => {
             let data = response[0];
-
             this.pokemon = data.map(p => {
                 return {
                     name: p.name,
@@ -75,6 +78,7 @@ export class PokemonListComponent implements OnInit {
         bulbaUrl = bulbaUrl.replace(TemplateKeywords.PokemonName, name);
         if (this.selectedGen !== this.currentGen) {
             //bulbapedia doesn't use a different url for current gen learnsets
+            bulbaUrl = bulbaUrl.replace("#Learnset", "");
             bulbaUrl = bulbaUrl.replace(TemplateKeywords.Generation, `/Generation_${TextFormat.getRomanNumeral(this.selectedGen)}_learnset#By_leveling_up`);
         }
         else {
