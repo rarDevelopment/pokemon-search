@@ -16,16 +16,12 @@ export class PokeApiService {
     }
 
     getAllPokemon(pokemonCount: number) {
-        // const interval = {
-        //     limit: pokemonCount,
-        //     offset: 0
-        // };
-        // console.log("interval", interval);
-        return this.api.getPokemonSpeciesList().then((response) => {
-            console.log("species response", response);
-            let pokemonLimited = response.results.slice(0, pokemonCount);
-            console.log("sliced", pokemonLimited);
-            this.pokemon = pokemonLimited.map(p => {
+        const interval = {
+            limit: pokemonCount,
+            offset: 0
+        };
+        return this.api.getPokemonSpeciesList(interval).then((response) => {
+            this.pokemon = response.results.map(p => {
                 let urlSegments = p.url.split('/');
                 let number = urlSegments[urlSegments.length - 2];
                 return this.buildPokemonFromData(p.name, number);
