@@ -1,13 +1,14 @@
 <h1>Pokémon List</h1>
 <div class="loading" *ngIf="isLoading">Loading...</div>
-<div class="container" *ngIf="!isLoading">
+<div class="error" *ngIf="isError">Error loading Pokémon.</div>
+<div class="container" *ngIf="!isLoading && !isError">
 
     <form class="parameter-form">
         <mat-form-field appearance="fill">
             <mat-label>Generation</mat-label>
-            <mat-select [(value)]="selectedGen" (selectionChange)="loadPokemon()">
-                <mat-option *ngFor="let gen of generationNumbers; let i = index" [value]="i+1">
-                    {{i+1}}
+            <mat-select [(value)]="selectedGenNumber" (selectionChange)="loadPokemon()">
+                <mat-option *ngFor="let gen of generations" [value]="gen.id">
+                    {{gen.name}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -25,11 +26,12 @@
     <form class="search-form">
         <mat-form-field class="search-field">
             <mat-label>Name or Number</mat-label>
-            <input name="search" matInput type="search" [(ngModel)]="searchText" autofocus />
+            <input name="search" (keyup)="applyFilter($event)" placeholder="Name or Number" #input matInput
+                type="search" autofocus />
         </mat-form-field>
     </form>
 
-    <table mat-table [dataSource]="pokemon | appFilter: searchText" class="mat-elevation-z8">
+    <table mat-table [dataSource]="pokemonDataSource" class="mat-elevation-z8">
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
         <ng-container matColumnDef="image">
@@ -38,11 +40,11 @@
                     [src]="'https://img.pokemondb.net/artwork/'+pokemon.name+'.jpg'" /></td>
         </ng-container>
         <ng-container matColumnDef="number">
-            <th mat-header-cell *matHeaderCellDef> Number </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Number </th>
             <td mat-cell *matCellDef="let pokemon"> {{pokemon.number}} </td>
         </ng-container>
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
             <td mat-cell *matCellDef="let pokemon"> {{pokemon.displayName}} </td>
         </ng-container>
         <ng-container matColumnDef="evolution-link">
@@ -69,4 +71,7 @@
             </td>
         </ng-container>
     </table>
+    <mat-paginator [length]="selectedGeneration.pokemonCount" [pageSize]="10" [pageSizeOptions]="[10,20, 50, 100]"
+        showFirstLastButtons>
+    </mat-paginator>
 </div>

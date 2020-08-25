@@ -1,6 +1,6 @@
 export class TextFormat {
 
-    static toTitleCase(text) {
+    static ToTitleCase(text) {
         text = text.toLowerCase()
             .split(' ')
             .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
@@ -8,7 +8,7 @@ export class TextFormat {
         return text;
     }
 
-    static getRomanNumeral(number) {
+    static GetRomanNumeral(number) {
         switch (number) {
             case 1:
                 return "I";
@@ -38,7 +38,7 @@ export class TextFormat {
         }
     }
 
-    static getSmogonLetters(generationNumber) {
+    static GetSmogonLetters(generationNumber: number) {
         switch (generationNumber) {
             case 1:
                 return "rb";
@@ -69,7 +69,7 @@ export class TextFormat {
                 break;
         }
     }
-    static getGameNames(generationNumber: number) {
+    static GetGameNames(generationNumber: number) {
         switch (generationNumber) {
             case 1:
                 return "Red/Blue/Yellow";
@@ -90,7 +90,7 @@ export class TextFormat {
                 return "X/Y & Omega Ruby/Alpha Sapphire";
                 break;
             case 7:
-                return "Sun/Moon";
+                return "Sun/Moon & Ultra Sun/Ultra Moon";
                 break;
             case 8:
                 return "Sword/Shield";

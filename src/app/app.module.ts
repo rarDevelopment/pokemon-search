@@ -10,25 +10,27 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { FilterPipe } from './filter.pipe';
 
 @NgModule({
-	declarations: [
-		AppComponent,
-		PokemonListComponent,
-		FilterPipe
-	],
-	imports: [
-		BrowserModule,
-		AppRoutingModule,
-		BrowserAnimationsModule,
-		FormsModule,
-		MatTableModule,
-		MatButtonModule,
-		MatInputModule,
-		MatSelectModule
-	],
-	providers: [],
-	bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        PokemonListComponent,
+        FilterPipe
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        MatTableModule,
+        MatButtonModule,
+        MatInputModule,
+        MatSelectModule,
+        MatPaginatorModule
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
