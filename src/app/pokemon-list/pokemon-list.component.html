@@ -36,8 +36,7 @@
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
         <ng-container matColumnDef="image">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let pokemon"><img width="50" height="50"
-                    [src]="'https://img.pokemondb.net/artwork/'+pokemon.name+'.jpg'" /></td>
+            <td mat-cell *matCellDef="let pokemon"><img width="50" height="50" [src]="pokemon.imgUrl" /></td>
         </ng-container>
         <ng-container matColumnDef="number">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Number </th>
@@ -55,7 +54,7 @@
         <ng-container matColumnDef="location-link">
             <th mat-header-cell *matHeaderCellDef> Location </th>
             <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button [href]="pokemon.locationUrls[selectedSite]"
-                    target="_blank" color="accent">Location</a>
+                    [disabled]="pokemon.locationUrls[selectedSite]==''" target="_blank" color="accent">Location</a>
             </td>
         </ng-container>
         <ng-container matColumnDef="effectiveness-link">

@@ -22,7 +22,7 @@ export class PokemonListComponent implements OnInit {
     isLoading: boolean;
     isError: boolean = false;
 
-    availableSites: Site[] = [Sites.Bulbapedia];//, "serebii", "smogon", "pokemondb"]
+    availableSites: Site[] = [Sites.Bulbapedia, Sites.Smogon];//, "serebii", "smogon", "pokemondb"]
     currentGen: number = 8;
     generationNumbers: number[] = Array(this.currentGen);
     generations: Generation[] =
@@ -51,22 +51,21 @@ export class PokemonListComponent implements OnInit {
     }
 
     loadPokemon() {
-
         this.selectedGeneration = this.getGenerationForNumber(this.selectedGenNumber);
         if (this.selectedGeneration) {
             this.isLoading = true;
             this.pokeApiService.getAllPokemon(this.selectedGeneration.pokemonCount).then((response) => {
                 let data = response;
-                console.log("this right here", data);
                 const pokemon = data.map(p => {
                     return {
+                        imgUrl: `https://img.pokemondb.net/artwork/${p.name}.jpg`,
                         name: p.name,
                         displayName: TextFormat.ToTitleCase(p.name),
                         number: p.number,
-                        evolutionUrls: this.buildEvolutionUrls(p.name, p.number),
-                        locationUrls: this.buildLocationUrls(p.name, p.number),
-                        effectivenessUrls: this.buildEffectivenessUrls(p.name, p.number),
-                        learnsetUrls: this.buildLearnsetUrls(p.name, p.number)
+                        evolutionUrls: this.buildEvolutionUrls(p.name, p.number, this.selectedGeneration.id),
+                        locationUrls: this.buildLocationUrls(p.name, p.number, this.selectedGeneration.id),
+                        effectivenessUrls: this.buildEffectivenessUrls(p.name, p.number, this.selectedGeneration.id),
+                        learnsetUrls: this.buildLearnsetUrls(p.name, p.number, this.selectedGeneration.id)
                     } as Pokemon;
                 });
                 this.pokemonDataSource = new MatTableDataSource(pokemon);
@@ -90,34 +89,29 @@ export class PokemonListComponent implements OnInit {
     }
 
     getGenerationForNumber(genNumber: number) {
-        console.log("gen", genNumber);
         return this.generations.find(g => g.id == genNumber);
     }
 
-    buildLocationUrls(name: string, number: number) {
-        let bulbaUrl = Sites.Bulbapedia.locationUrlTemplate;
-        bulbaUrl = bulbaUrl.replace(TemplateKeywords.PokemonName, name);
+    buildLocationUrls(name: string, pokemonNumber: number, generationNumber: number) {
         return {
-            [Sites.Bulbapedia.name]: bulbaUrl,
+            [Sites.Bulbapedia.name]: Sites.Bulbapedia.locationUrlTemplate.replace(TemplateKeywords.PokemonName, name),
+            [Sites.Smogon.name]: Sites.Smogon.locationUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
         };
     }
-    buildEvolutionUrls(name: string, number: number) {
-        let bulbaUrl = Sites.Bulbapedia.evolutionUrlTemplate;
-        bulbaUrl = bulbaUrl.replace(TemplateKeywords.PokemonName, name);
+    buildEvolutionUrls(name: string, pokemonNumber: number, generationNumber: number) {
         return {
-            [Sites.Bulbapedia.name]: bulbaUrl,
+            [Sites.Bulbapedia.name]: Sites.Bulbapedia.evolutionUrlTemplate.replace(TemplateKeywords.PokemonName, name),
+            [Sites.Smogon.name]: Sites.Smogon.evolutionUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
         };
     }
-    buildEffectivenessUrls(name: string, number: number) {
-        let bulbaUrl = Sites.Bulbapedia.effectivenessUrlTemplate;
-        bulbaUrl = bulbaUrl.replace(TemplateKeywords.PokemonName, name);
+    buildEffectivenessUrls(name: string, pokemonNumber: number, generationNumber: number) {
         return {
-            [Sites.Bulbapedia.name]: bulbaUrl,
-        };
+            [Sites.Bulbapedia.name]: Sites.Bulbapedia.effectivenessUrlTemplate.replace(TemplateKeywords.PokemonName, name),
+            [Sites.Smogon.name]: "",
+        }
     }
-    buildLearnsetUrls(name: string, number: number) {
-        let bulbaUrl = Sites.Bulbapedia.learnsetUrlTemplate;
-        bulbaUrl = bulbaUrl.replace(TemplateKeywords.PokemonName, name);
+    buildLearnsetUrls(name: string, pokemonNumber: number, generationNumber: number) {
+        let bulbaUrl = Sites.Bulbapedia.learnsetUrlTemplate.replace(TemplateKeywords.PokemonName, name);
         if (this.selectedGenNumber !== this.currentGen) {
             //bulbapedia doesn't use a different url for current gen learnsets
             bulbaUrl = bulbaUrl.replace("#Learnset", "");
@@ -128,6 +122,7 @@ export class PokemonListComponent implements OnInit {
         }
         return {
             [Sites.Bulbapedia.name]: bulbaUrl,
+            [Sites.Smogon.name]: Sites.Smogon.evolutionUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
         };
     }
 }
