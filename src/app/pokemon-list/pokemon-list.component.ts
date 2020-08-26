@@ -51,7 +51,7 @@ export class PokemonListComponent implements OnInit {
     }
 
     loadPokemon() {
-        console.log("hello");
+
         this.selectedGeneration = this.getGenerationForNumber(this.selectedGenNumber);
         if (this.selectedGeneration) {
             this.isLoading = true;
