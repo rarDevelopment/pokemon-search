@@ -39,7 +39,6 @@ export class TextFormat {
     }
 
     static GetSmogonLetters(generationNumber: number) {
-        console.log("smogon number", generationNumber);
         switch (generationNumber) {
             case 1:
                 return "rb";

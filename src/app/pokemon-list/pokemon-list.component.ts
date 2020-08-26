@@ -95,7 +95,7 @@ export class PokemonListComponent implements OnInit {
     buildLocationUrls(name: string, pokemonNumber: number, generationNumber: number) {
         return {
             [Sites.Bulbapedia.name]: Sites.Bulbapedia.locationUrlTemplate.replace(TemplateKeywords.PokemonName, name),
-            [Sites.Smogon.name]: Sites.Smogon.locationUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
+            [Sites.Smogon.name]: "",
         };
     }
     buildEvolutionUrls(name: string, pokemonNumber: number, generationNumber: number) {

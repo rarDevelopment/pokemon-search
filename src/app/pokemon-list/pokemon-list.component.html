@@ -48,25 +48,28 @@
         </ng-container>
         <ng-container matColumnDef="evolution-link">
             <th mat-header-cell *matHeaderCellDef> Evolution </th>
-            <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button color="primary" target="_blank"
+            <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button target="_blank"
+                    [disabled]="pokemon.evolutionUrls[selectedSite]==''"
                     [href]="pokemon.evolutionUrls[selectedSite]">Evolution</a></td>
         </ng-container>
         <ng-container matColumnDef="location-link">
             <th mat-header-cell *matHeaderCellDef> Location </th>
             <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button [href]="pokemon.locationUrls[selectedSite]"
-                    [disabled]="pokemon.locationUrls[selectedSite]==''" target="_blank" color="accent">Location</a>
+                    [disabled]="pokemon.locationUrls[selectedSite]==''" target="_blank" color="primary">Location</a>
             </td>
         </ng-container>
         <ng-container matColumnDef="effectiveness-link">
             <th mat-header-cell *matHeaderCellDef> Effectiveness </th>
             <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button
-                    [href]="pokemon.effectivenessUrls[selectedSite]" target="_blank" color="warn">Effectiveness</a>
+                    [disabled]="pokemon.effectivenessUrls[selectedSite]==''"
+                    [href]="pokemon.effectivenessUrls[selectedSite]" target="_blank" color="accent">Effectiveness</a>
             </td>
         </ng-container>
         <ng-container matColumnDef="learnset-link">
             <th mat-header-cell *matHeaderCellDef> Moveset </th>
-            <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button [href]="pokemon.learnsetUrls[selectedSite]"
-                    target="_blank" color="primary">Learnset</a>
+            <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button
+                    [disabled]="pokemon.learnsetUrls[selectedSite]==''" [href]="pokemon.learnsetUrls[selectedSite]"
+                    target="_blank" color="warn">Learnset</a>
             </td>
         </ng-container>
     </table>
