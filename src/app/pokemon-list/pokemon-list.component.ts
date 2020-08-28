@@ -22,7 +22,7 @@ export class PokemonListComponent implements OnInit {
     isLoading: boolean;
     isError: boolean = false;
 
-    availableSites: Site[] = [Sites.Bulbapedia, Sites.Smogon];//, "serebii", "smogon", "pokemondb"]
+    availableSites: Site[] = [Sites.Bulbapedia, Sites.PokemonDB, Sites.Smogon];//, "serebii"]
     currentGen: number = 8;
     generationNumbers: number[] = Array(this.currentGen);
     generations: Generation[] =
@@ -96,18 +96,21 @@ export class PokemonListComponent implements OnInit {
         return {
             [Sites.Bulbapedia.name]: Sites.Bulbapedia.locationUrlTemplate.replace(TemplateKeywords.PokemonName, name),
             [Sites.Smogon.name]: "",
+            [Sites.PokemonDB.name]: Sites.PokemonDB.locationUrlTemplate.replace(TemplateKeywords.PokemonName, name),
         };
     }
     buildEvolutionUrls(name: string, pokemonNumber: number, generationNumber: number) {
         return {
             [Sites.Bulbapedia.name]: Sites.Bulbapedia.evolutionUrlTemplate.replace(TemplateKeywords.PokemonName, name),
             [Sites.Smogon.name]: Sites.Smogon.evolutionUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
+            [Sites.PokemonDB.name]: Sites.PokemonDB.evolutionUrlTemplate.replace(TemplateKeywords.PokemonName, name),
         };
     }
     buildEffectivenessUrls(name: string, pokemonNumber: number, generationNumber: number) {
         return {
             [Sites.Bulbapedia.name]: Sites.Bulbapedia.effectivenessUrlTemplate.replace(TemplateKeywords.PokemonName, name),
             [Sites.Smogon.name]: "",
+            [Sites.PokemonDB.name]: Sites.PokemonDB.effectivenessUrlTemplate.replace(TemplateKeywords.PokemonName, name),
         }
     }
     buildLearnsetUrls(name: string, pokemonNumber: number, generationNumber: number) {
@@ -122,7 +125,8 @@ export class PokemonListComponent implements OnInit {
         }
         return {
             [Sites.Bulbapedia.name]: bulbaUrl,
-            [Sites.Smogon.name]: Sites.Smogon.evolutionUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
+            [Sites.Smogon.name]: Sites.Smogon.learnsetUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
+            [Sites.PokemonDB.name]: Sites.PokemonDB.learnsetUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, generationNumber.toString()),
         };
     }
 }

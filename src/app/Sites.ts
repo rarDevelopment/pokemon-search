@@ -20,5 +20,14 @@ export class Sites {
         `http://www.smogon.com/dex/${TemplateKeywords.Generation}/pokemon/${TemplateKeywords.PokemonName}/`
     );
 
+    static PokemonDB: Site = new Site(
+        "pokemondb",
+        "http://www.smogon.com/dex/",
+        `http://pokemondb.net/pokedex/${TemplateKeywords.PokemonName}#dex-locations`,
+        `http://pokemondb.net/pokedex/${TemplateKeywords.PokemonName}#dex-basics`,
+        `http://pokemondb.net/pokedex/${TemplateKeywords.PokemonName}/moves/${TemplateKeywords.Generation}`,
+        `http://pokemondb.net/pokedex/${TemplateKeywords.PokemonName}#dex-evolution`,
+    );
+
     public static AllSites: Site[] = [Sites.Bulbapedia, Sites.Smogon];
 }
