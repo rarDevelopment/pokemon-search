@@ -5,13 +5,15 @@ export class Site {
     locationUrlTemplate: string;
     effectivenessUrlTemplate: string;
     learnsetUrlTemplate: string;
+    typeChartUrl:string;
 
-    constructor(name: string, url: string, locationUrlTemplate: string, effectivenessUrlTemplate: string, learnsetUrlTemplate: string, evolutionUrlTemplate: string) {
+    constructor(name: string, url: string, locationUrlTemplate: string, effectivenessUrlTemplate: string, learnsetUrlTemplate: string, evolutionUrlTemplate: string, typeChartUrl: string) {
         this.name = name;
         this.baseUrl = url;
         this.evolutionUrlTemplate = evolutionUrlTemplate;
         this.locationUrlTemplate = locationUrlTemplate;
         this.effectivenessUrlTemplate = effectivenessUrlTemplate;
         this.learnsetUrlTemplate = learnsetUrlTemplate;
+        this.typeChartUrl = typeChartUrl;
     }
 }

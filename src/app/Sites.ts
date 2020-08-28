@@ -8,7 +8,8 @@ export class Sites {
         `https://bulbapedia.bulbagarden.net/wiki/${TemplateKeywords.PokemonName}_(Pok%C3%A9mon)#Game_locations`,
         `https://bulbapedia.bulbagarden.net/wiki/${TemplateKeywords.PokemonName}_(Pok%C3%A9mon)#Type_effectiveness`,
         `https://bulbapedia.bulbagarden.net/wiki/${TemplateKeywords.PokemonName}_(Pok%C3%A9mon)#Learnset${TemplateKeywords.Generation}`,
-        `https://bulbapedia.bulbagarden.net/wiki/${TemplateKeywords.PokemonName}_(Pok%C3%A9mon)#Evolution`
+        `https://bulbapedia.bulbagarden.net/wiki/${TemplateKeywords.PokemonName}_(Pok%C3%A9mon)#Evolution`,
+        `http://bulbapedia.bulbagarden.net/wiki/Type#Type_chart`
     );
 
     static Smogon: Site = new Site(
@@ -17,7 +18,8 @@ export class Sites {
         `http://www.smogon.com/dex/${TemplateKeywords.Generation}/pokemon/${TemplateKeywords.PokemonName}/`,
         `http://www.smogon.com/dex/${TemplateKeywords.Generation}/pokemon/${TemplateKeywords.PokemonName}/`,
         `http://www.smogon.com/dex/${TemplateKeywords.Generation}/pokemon/${TemplateKeywords.PokemonName}/`,
-        `http://www.smogon.com/dex/${TemplateKeywords.Generation}/pokemon/${TemplateKeywords.PokemonName}/`
+        `http://www.smogon.com/dex/${TemplateKeywords.Generation}/pokemon/${TemplateKeywords.PokemonName}/`,
+        `http://www.smogon.com/dex/${TemplateKeywords.Generation}/types/`
     );
 
     static PokemonDB: Site = new Site(
@@ -27,7 +29,8 @@ export class Sites {
         `http://pokemondb.net/pokedex/${TemplateKeywords.PokemonName}#dex-basics`,
         `http://pokemondb.net/pokedex/${TemplateKeywords.PokemonName}/moves/${TemplateKeywords.Generation}`,
         `http://pokemondb.net/pokedex/${TemplateKeywords.PokemonName}#dex-evolution`,
+        `http://pokemondb.net/type/`
     );
 
-    public static AllSites: Site[] = [Sites.Bulbapedia, Sites.Smogon];
+    public static AllSites: Site[] = [Sites.Bulbapedia, Sites.PokemonDB, Sites.Smogon];
 }

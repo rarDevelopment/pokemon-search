@@ -1,5 +1,5 @@
 <h1>Pokémon List</h1>
-<div class="loading" *ngIf="isLoading">Loading...</div>
+<div class="loading"><span *ngIf="isLoading">Loading...</span>&nbsp;</div>
 <div class="error" *ngIf="isError">Error loading Pokémon.</div>
 <div class="container">
 
@@ -15,7 +15,7 @@
 
         <mat-form-field appearance="fill">
             <mat-label>Site</mat-label>
-            <mat-select [(value)]="selectedSite">
+            <mat-select [(value)]="selectedSiteName">
                 <mat-option *ngFor="let site of availableSites;" [value]="site.name">
                     {{site.name}}
                 </mat-option>

@@ -39,9 +39,10 @@ export class PokemonListComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-    selectedSite: string = Sites.Bulbapedia.name; //TODO: change this to be a parameter
-    selectedGenNumber: number = 8;
+    selectedSiteName: string = Sites.Bulbapedia.name; //TODO: change this to be a parameter
+    selectedGenNumber: number = 8; //TODO: change this to be a parameter
     selectedGeneration: Generation;
+    selectedSite: Site;
 
     constructor(private pokeApiService: PokeApiService) {
     }
@@ -51,8 +52,9 @@ export class PokemonListComponent implements OnInit {
     }
 
     loadPokemon() {
+        this.selectedSite = this.getSiteByName(this.selectedSiteName);
         this.selectedGeneration = this.getGenerationForNumber(this.selectedGenNumber);
-        if (this.selectedGeneration) {
+        if (this.selectedSite && this.selectedGeneration) {
             this.isLoading = true;
             this.pokeApiService.getAllPokemon(this.selectedGeneration.pokemonCount).then((response) => {
                 let data = response;
@@ -86,6 +88,10 @@ export class PokemonListComponent implements OnInit {
         if (this.pokemonDataSource.paginator) {
             this.pokemonDataSource.paginator.firstPage();
         }
+    }
+
+    getSiteByName(selectedSiteName: string): Site {
+        return Sites.AllSites.find(s => s.name == selectedSiteName);
     }
 
     getGenerationForNumber(genNumber: number) {
