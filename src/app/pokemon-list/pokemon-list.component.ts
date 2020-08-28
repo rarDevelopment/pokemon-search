@@ -61,6 +61,7 @@ export class PokemonListComponent implements OnInit {
                 const pokemon = data.map(p => {
                     return {
                         imgUrl: `https://img.pokemondb.net/artwork/${p.name}.jpg`,
+                        //imgUrl: `https://img.pokemondb.net/sprites/${TextFormat.GetPokemonDbSpriteGenNames(this.selectedGeneration.id)}/normal/${p.name}.png`, //GetPokemonDbSpriteGenNames
                         name: p.name,
                         displayName: TextFormat.ToTitleCase(p.name),
                         number: p.number,
@@ -133,6 +134,20 @@ export class PokemonListComponent implements OnInit {
             [Sites.Bulbapedia.name]: bulbaUrl,
             [Sites.Smogon.name]: Sites.Smogon.learnsetUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
             [Sites.PokemonDB.name]: Sites.PokemonDB.learnsetUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, generationNumber.toString()),
+        };
+    }
+    buildTypeChartUrls(generationNumber: number) {
+        return {
+            [Sites.Bulbapedia.name]: Sites.Bulbapedia.typeChartUrl.replace(TemplateKeywords.Generation, generationNumber.toString()),
+            [Sites.Smogon.name]: Sites.Smogon.typeChartUrl.replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
+            [Sites.PokemonDB.name]: Sites.PokemonDB.typeChartUrl.replace(TemplateKeywords.Generation, generationNumber.toString()),
+        };
+    }
+    buildLocationRegionUrl(generationNumber: number) {
+        return {
+            [Sites.Bulbapedia.name]: Sites.Bulbapedia.locationRegionUrl.replace(TemplateKeywords.Generation, TextFormat.GetPokemonDbGenerationRegionNames(generationNumber)),
+            [Sites.Smogon.name]: Sites.Smogon.locationRegionUrl.replace(TemplateKeywords.Generation, TextFormat.GetPokemonDbGenerationRegionNames(generationNumber)),
+            [Sites.PokemonDB.name]: Sites.PokemonDB.locationRegionUrl.replace(TemplateKeywords.Generation, TextFormat.GetPokemonDbGenerationRegionNames(generationNumber)),
         };
     }
 }

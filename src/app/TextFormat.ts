@@ -69,6 +69,71 @@ export class TextFormat {
                 break;
         }
     }
+
+    static GetPokemonDbSpriteGenNames(generationNumber: number) {
+        switch (generationNumber) {
+            case 1:
+                return "red-blue";
+                break;
+            case 2:
+                return "gold";
+                break;
+            case 3:
+                return "ruby-sapphire";
+                break;
+            case 4:
+                return "diamond-pearl";
+                break;
+            case 5:
+                return "black-white";
+                break;
+            case 6:
+                return "x-y";
+                break;
+            case 7:
+                return "sun-moon";
+                break;
+            case 8:
+                return "sword-shield";
+                break;
+            default:
+                return "";
+                break;
+        }
+    }
+
+    static GetPokemonDbGenerationRegionNames(generationNumber: number) {
+        switch (generationNumber) {
+            case 1:
+                return "";
+                break;
+            case 2:
+                return "johto";
+                break;
+            case 3:
+                return "hoenn";
+                break;
+            case 4:
+                return "sinnoh";
+                break;
+            case 5:
+                return "unova";
+                break;
+            case 6:
+                return "kalos";
+                break;
+            case 7:
+                return "alola";
+                break;
+            case 8:
+                return "galar";
+                break;
+            default:
+                return "";
+                break;
+        }
+    }
+
     static GetGameNames(generationNumber: number) {
         switch (generationNumber) {
             case 1:
