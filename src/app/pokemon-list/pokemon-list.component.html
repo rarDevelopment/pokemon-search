@@ -55,27 +55,28 @@
 		<ng-container matColumnDef="evolution-link">
 			<th mat-header-cell *matHeaderCellDef> Evolution </th>
 			<td mat-cell *matCellDef="let pokemon"> <a mat-raised-button target="_blank"
-					[disabled]="pokemon.evolutionUrls[selectedSite]==''"
-					[href]="pokemon.evolutionUrls[selectedSite]">Evolution</a></td>
+					[disabled]="pokemon.evolutionUrls[selectedSiteName]==''"
+					[href]="pokemon.evolutionUrls[selectedSiteName]">Evolution</a></td>
 		</ng-container>
 		<ng-container matColumnDef="location-link">
 			<th mat-header-cell *matHeaderCellDef> Location </th>
-			<td mat-cell *matCellDef="let pokemon"> <a mat-raised-button [href]="pokemon.locationUrls[selectedSite]"
-					[disabled]="pokemon.locationUrls[selectedSite]==''" target="_blank" color="primary">Location</a>
+			<td mat-cell *matCellDef="let pokemon"> <a mat-raised-button [href]="pokemon.locationUrls[selectedSiteName]"
+					[disabled]="pokemon.locationUrls[selectedSiteName]==''" target="_blank" color="primary">Location</a>
 			</td>
 		</ng-container>
 		<ng-container matColumnDef="effectiveness-link">
 			<th mat-header-cell *matHeaderCellDef> Effectiveness </th>
 			<td mat-cell *matCellDef="let pokemon"> <a mat-raised-button
-					[disabled]="pokemon.effectivenessUrls[selectedSite]==''"
-					[href]="pokemon.effectivenessUrls[selectedSite]" target="_blank" color="accent">Effectiveness</a>
+					[disabled]="pokemon.effectivenessUrls[selectedSiteName]==''"
+					[href]="pokemon.effectivenessUrls[selectedSiteName]" target="_blank"
+					color="accent">Effectiveness</a>
 			</td>
 		</ng-container>
 		<ng-container matColumnDef="learnset-link">
 			<th mat-header-cell *matHeaderCellDef> Moveset </th>
 			<td mat-cell *matCellDef="let pokemon"> <a mat-raised-button
-					[disabled]="pokemon.learnsetUrls[selectedSite]==''" [href]="pokemon.learnsetUrls[selectedSite]"
-					target="_blank" color="warn">Learnset</a>
+					[disabled]="pokemon.learnsetUrls[selectedSiteName]==''"
+					[href]="pokemon.learnsetUrls[selectedSiteName]" target="_blank" color="warn">Learnset</a>
 			</td>
 		</ng-container>
 	</table>
