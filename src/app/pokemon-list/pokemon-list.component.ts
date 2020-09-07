@@ -22,7 +22,7 @@ export class PokemonListComponent implements OnInit {
     isLoading: boolean;
     isError: boolean = false;
 
-    availableSites: Site[] = [Sites.Bulbapedia, Sites.PokemonDB, Sites.Smogon];//, "serebii"]
+    availableSites: Site[] = [Sites.Bulbapedia, Sites.PokemonDB, Sites.Smogon, Sites.Serebii];
     currentGen: number = 8;
     generationNumbers: number[] = Array(this.currentGen);
     generations: Generation[] =
@@ -79,6 +79,7 @@ export class PokemonListComponent implements OnInit {
         }
         else {
             this.isError = true;
+            console.error(`Generation:\nNumber: ${this.selectedGenNumber}\nGeneration:${this.selectedGeneration}`)
         }
     }
 
@@ -100,27 +101,38 @@ export class PokemonListComponent implements OnInit {
     }
 
     buildLocationUrls(name: string, pokemonNumber: number, generationNumber: number) {
+        let serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(name, pokemonNumber, generationNumber);
+        let serebiiUrl = Sites.Serebii.effectivenessUrlTemplate.replace(TemplateKeywords.PokemonName, serebiiIdentifier).replace(TemplateKeywords.Generation, TextFormat.GetSerebiiUrl(generationNumber))
         return {
             [Sites.Bulbapedia.name]: Sites.Bulbapedia.locationUrlTemplate.replace(TemplateKeywords.PokemonName, name),
             [Sites.Smogon.name]: "",
             [Sites.PokemonDB.name]: Sites.PokemonDB.locationUrlTemplate.replace(TemplateKeywords.PokemonName, name),
+            [Sites.Serebii.name]: serebiiUrl,
         };
     }
     buildEvolutionUrls(name: string, pokemonNumber: number, generationNumber: number) {
+        let serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(name, pokemonNumber, generationNumber);
+        let serebiiUrl = Sites.Serebii.effectivenessUrlTemplate.replace(TemplateKeywords.PokemonName, serebiiIdentifier).replace(TemplateKeywords.Generation, TextFormat.GetSerebiiUrl(generationNumber))
         return {
             [Sites.Bulbapedia.name]: Sites.Bulbapedia.evolutionUrlTemplate.replace(TemplateKeywords.PokemonName, name),
             [Sites.Smogon.name]: Sites.Smogon.evolutionUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
             [Sites.PokemonDB.name]: Sites.PokemonDB.evolutionUrlTemplate.replace(TemplateKeywords.PokemonName, name),
+            [Sites.Serebii.name]: serebiiUrl
         };
     }
     buildEffectivenessUrls(name: string, pokemonNumber: number, generationNumber: number) {
+        let serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(name, pokemonNumber, generationNumber);
+        let serebiiUrl = Sites.Serebii.effectivenessUrlTemplate.replace(TemplateKeywords.PokemonName, serebiiIdentifier).replace(TemplateKeywords.Generation, TextFormat.GetSerebiiUrl(generationNumber))
         return {
             [Sites.Bulbapedia.name]: Sites.Bulbapedia.effectivenessUrlTemplate.replace(TemplateKeywords.PokemonName, name),
             [Sites.Smogon.name]: "",
             [Sites.PokemonDB.name]: Sites.PokemonDB.effectivenessUrlTemplate.replace(TemplateKeywords.PokemonName, name),
+            [Sites.Serebii.name]: serebiiUrl,
         }
     }
     buildLearnsetUrls(name: string, pokemonNumber: number, generationNumber: number) {
+        let serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(name, pokemonNumber, generationNumber);
+        let serebiiUrl = Sites.Serebii.effectivenessUrlTemplate.replace(TemplateKeywords.PokemonName, serebiiIdentifier).replace(TemplateKeywords.Generation, TextFormat.GetSerebiiUrl(generationNumber))
         let bulbaUrl = Sites.Bulbapedia.learnsetUrlTemplate.replace(TemplateKeywords.PokemonName, name);
         if (this.selectedGenNumber !== this.currentGen) {
             //bulbapedia doesn't use a different url for current gen learnsets
@@ -134,6 +146,7 @@ export class PokemonListComponent implements OnInit {
             [Sites.Bulbapedia.name]: bulbaUrl,
             [Sites.Smogon.name]: Sites.Smogon.learnsetUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
             [Sites.PokemonDB.name]: Sites.PokemonDB.learnsetUrlTemplate.replace(TemplateKeywords.PokemonName, name).replace(TemplateKeywords.Generation, generationNumber.toString()),
+            [Sites.Serebii.name]: serebiiUrl,
         };
     }
     buildTypeChartUrls(generationNumber: number) {
@@ -141,6 +154,7 @@ export class PokemonListComponent implements OnInit {
             [Sites.Bulbapedia.name]: Sites.Bulbapedia.typeChartUrl.replace(TemplateKeywords.Generation, generationNumber.toString()),
             [Sites.Smogon.name]: Sites.Smogon.typeChartUrl.replace(TemplateKeywords.Generation, TextFormat.GetSmogonLetters(generationNumber)),
             [Sites.PokemonDB.name]: Sites.PokemonDB.typeChartUrl.replace(TemplateKeywords.Generation, generationNumber.toString()),
+            [Sites.Serebii.name]: Sites.Serebii.typeChartUrl
         };
     }
     buildLocationRegionUrl(generationNumber: number) {
@@ -148,6 +162,7 @@ export class PokemonListComponent implements OnInit {
             [Sites.Bulbapedia.name]: Sites.Bulbapedia.locationRegionUrl.replace(TemplateKeywords.Generation, TextFormat.GetPokemonDbGenerationRegionNames(generationNumber)),
             [Sites.Smogon.name]: Sites.Smogon.locationRegionUrl.replace(TemplateKeywords.Generation, TextFormat.GetPokemonDbGenerationRegionNames(generationNumber)),
             [Sites.PokemonDB.name]: Sites.PokemonDB.locationRegionUrl.replace(TemplateKeywords.Generation, TextFormat.GetPokemonDbGenerationRegionNames(generationNumber)),
+            [Sites.Serebii.name]: Sites.Serebii.locationRegionUrl
         };
     }
 }

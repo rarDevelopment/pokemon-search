@@ -35,5 +35,16 @@ export class Sites {
         `https://pokemondb.net/location#tab-${TemplateKeywords.Generation}`
     );
 
-    public static AllSites: Site[] = [Sites.Bulbapedia, Sites.PokemonDB, Sites.Smogon];
+    static Serebii: Site = new Site(
+        "serebii",
+        "https://serebii.net/",
+        `https://www.serebii.net/${TemplateKeywords.Generation}/${TemplateKeywords.PokemonName}`,
+        `https://www.serebii.net/${TemplateKeywords.Generation}/${TemplateKeywords.PokemonName}`,
+        `https://www.serebii.net/${TemplateKeywords.Generation}/${TemplateKeywords.PokemonName}`,
+        `https://www.serebii.net/${TemplateKeywords.Generation}/${TemplateKeywords.PokemonName}`,
+        "https://www.serebii.net/games/type.shtml",
+        "https://serebii.net/pokearth/"
+    );
+
+    public static AllSites: Site[] = [Sites.Bulbapedia, Sites.PokemonDB, Sites.Smogon, Sites.Serebii];
 }
