@@ -50,6 +50,7 @@ export class PokemonListComponent implements OnInit {
 
 
     ngOnInit() {
+        this.loadPokemon();
         this.route.queryParamMap.subscribe(params => {
             let urlGen = params.get("gen");
             if (urlGen) {
@@ -62,7 +63,7 @@ export class PokemonListComponent implements OnInit {
         });
         this.route.queryParamMap.subscribe(params => {
             let urlSite = params.get("site");
-            
+            console.log("param", urlSite);
             if (urlSite) {
                 if (Sites.AllSites.find(s => s.name.toLowerCase() == urlSite.trim().toLowerCase())) {
                     this.selectedSiteName = urlSite;
