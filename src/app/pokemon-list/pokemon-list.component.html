@@ -1,6 +1,8 @@
-<h1 class="title">Pokémon List</h1>
-<div class="loading"><span *ngIf="isLoading">Loading...</span>&nbsp;</div>
-<div class="error" *ngIf="isError">Error loading Pokémon.</div>
+<h1 class="title">Pokémon Search</h1>
+<div class="loading"><span *ngIf="!isLoading && !isError">{{selectedGeneration.pokemonCount}} Pokémon found.</span>
+    <span *ngIf="isLoading">Loading...</span><span class="error" *ngIf="isError">Error loading Pokémon.</span>&nbsp;
+</div>
+
 <div class="container">
     <div class="link-container">
         <a [href]="buildTypeChartUrls(selectedGeneration.id)[selectedSite.name]" mat-raised-button color="primary">Type

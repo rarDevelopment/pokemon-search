@@ -50,7 +50,7 @@ export class PokemonListComponent implements OnInit {
 
 
     ngOnInit() {
-        this.loadPokemon();
+        //this.loadPokemon();
         this.route.queryParamMap.subscribe(params => {
             let urlGen = params.get("gen");
             if (urlGen) {
