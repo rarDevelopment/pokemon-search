@@ -9,7 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Generation } from '../Generation';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-pokemon-list',
@@ -45,7 +45,7 @@ export class PokemonListComponent implements OnInit {
     selectedGeneration: Generation;
     selectedSite: Site;
 
-    constructor(private pokeApiService: PokeApiService, private route: ActivatedRoute) {
+    constructor(private pokeApiService: PokeApiService, private route: ActivatedRoute, private router: Router) {
     }
 
 
@@ -60,8 +60,6 @@ export class PokemonListComponent implements OnInit {
                     this.loadPokemon();
                 }
             }
-        });
-        this.route.queryParamMap.subscribe(params => {
             let urlSite = params.get("site");
             console.log("param", urlSite);
             if (urlSite) {
@@ -73,6 +71,29 @@ export class PokemonListComponent implements OnInit {
         });
     }
 
+
+    navigateToParams(queryParams) {
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: queryParams,
+            queryParamsHandling: 'merge',
+            skipLocationChange: false
+        });
+    }
+
+    navigateToGen(gen: number) {
+        let queryParams = {
+            gen: gen
+        }
+        this.navigateToParams(queryParams);
+    }
+
+    navigateToSite(site: string) {
+        let queryParams = {
+            site: site
+        }
+        this.navigateToParams(queryParams);
+    }
 
     loadPokemon() {
         this.selectedSite = this.getSiteByName(this.selectedSiteName);
