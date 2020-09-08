@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Generation } from '../Generation';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-pokemon-list',
@@ -44,12 +45,33 @@ export class PokemonListComponent implements OnInit {
     selectedGeneration: Generation;
     selectedSite: Site;
 
-    constructor(private pokeApiService: PokeApiService) {
+    constructor(private pokeApiService: PokeApiService, private route: ActivatedRoute) {
     }
 
+
     ngOnInit() {
-        this.loadPokemon();
+        this.route.queryParamMap.subscribe(params => {
+            let urlGen = params.get("gen");
+            if (urlGen) {
+                let genNumber = parseInt(urlGen);
+                if (genNumber) {
+                    this.selectedGenNumber = genNumber;
+                    this.loadPokemon();
+                }
+            }
+        });
+        this.route.queryParamMap.subscribe(params => {
+            let urlSite = params.get("site");
+            
+            if (urlSite) {
+                if (Sites.AllSites.find(s => s.name.toLowerCase() == urlSite.trim().toLowerCase())) {
+                    this.selectedSiteName = urlSite;
+                    this.loadPokemon();
+                }
+            }
+        });
     }
+
 
     loadPokemon() {
         this.selectedSite = this.getSiteByName(this.selectedSiteName);
