@@ -34,7 +34,7 @@ export class PokemonListComponent implements OnInit {
         new Generation(5, 649),
         new Generation(6, 721),
         new Generation(7, 807),
-        new Generation(8, 893)];
+        new Generation(8, 898)];
 
     pokemonDataSource: MatTableDataSource<Pokemon> = new MatTableDataSource();
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -50,7 +50,7 @@ export class PokemonListComponent implements OnInit {
 
 
     ngOnInit() {
-        //this.loadPokemon();
+        this.loadPokemon();
         this.route.queryParamMap.subscribe(params => {
             let urlGen = params.get("gen");
             if (urlGen) {
