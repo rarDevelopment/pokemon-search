@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Pokedex } from "pokeapi-js-wrapper";
-import { Pokemon } from 'src/Pokemon';
+import { Pokemon } from '../Pokemon';
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +24,7 @@ export class PokeApiService {
             this.pokemon = response.results.map(p => {
                 let urlSegments = p.url.split('/');
                 let number = urlSegments[urlSegments.length - 2];
-                return this.buildPokemonFromData(p.name, number);
+                return this.buildPokemonFromData(p.name, parseInt(number));
             });
             console.log("end result", this.pokemon);
             return this.pokemon;

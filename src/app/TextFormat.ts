@@ -38,7 +38,7 @@ export class TextFormat {
 		}
 	}
 
-	static GetSmogonLetters(generationNumber: number) {
+	static GetSmogonLetters(generationNumber?: number) {
 		switch (generationNumber) {
 			case 1:
 				return "rb";
@@ -75,7 +75,7 @@ export class TextFormat {
 		return (zeroes + number).slice(-numberOfDigits);
 	}
 
-	static GetSerebiiPokemonIdentifier(pokemonName, pokemonNumber, generationNumber){
+	static GetSerebiiPokemonIdentifier(pokemonName, pokemonNumber, generationNumber?){
 		if(generationNumber < 8){
 			let formattedNumber = this.FormatNumberOfDigits(pokemonNumber, 3);
 			return formattedNumber + ".shtml";
@@ -85,7 +85,7 @@ export class TextFormat {
 		}
 	}
 
-	static GetSerebiiUrl(generationNumber: number) {
+	static GetSerebiiUrl(generationNumber?: number) {
 		switch (generationNumber) {
 			case 1:
 				return "pokedex";
@@ -117,7 +117,7 @@ export class TextFormat {
 		}
 	}
 
-	static GetPokemonDbSpriteGenNames(generationNumber: number) {
+	static GetPokemonDbSpriteGenNames(generationNumber?: number) {
 		switch (generationNumber) {
 			case 1:
 				return "red-blue";
@@ -149,7 +149,7 @@ export class TextFormat {
 		}
 	}
 
-	static GetPokemonDbGenerationRegionNames(generationNumber: number) {
+	static GetPokemonDbGenerationRegionNames(generationNumber?: number) {
 		switch (generationNumber) {
 			case 1:
 				return "";

@@ -1,14 +1,14 @@
 <h1 class="title">Pokémon Search</h1>
-<div class="loading"><span *ngIf="!isLoading && !isError">{{selectedGeneration.pokemonCount}} Pokémon found.</span>
+<div class="loading"><span *ngIf="!isLoading && !isError">{{selectedGeneration?.pokemonCount}} Pokémon found.</span>
     <span *ngIf="isLoading">Loading...</span><span class="error" *ngIf="isError">Error loading Pokémon.</span>&nbsp;
 </div>
 
 <div class="container">
     <div class="link-container">
-        <a [href]="buildTypeChartUrls(selectedGeneration.id)[selectedSite.name]" mat-raised-button color="primary">Type
+        <a [href]="buildTypeChartUrls(selectedGeneration?.id)[selectedSite.name]" mat-raised-button color="primary">Type
             Chart</a>
         &nbsp;
-        <a [href]="buildLocationRegionUrl(selectedGeneration.id)[selectedSite.name]" mat-raised-button
+        <a [href]="buildLocationRegionUrl(selectedGeneration?.id)[selectedSite.name]" mat-raised-button
             color="accent">Locations by Region (Pokémon DB)</a>
     </div>
     <form class="parameter-form">
@@ -39,7 +39,7 @@
         </mat-form-field>
     </form>
 
-    <table mat-table [dataSource]="pokemonDataSource" class="mat-elevation-z8">
+    <mat-table [dataSource]="pokemonDataSource" class="mat-elevation-z8">
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
         <ng-container matColumnDef="image">
@@ -57,19 +57,19 @@
         <ng-container matColumnDef="evolution-link">
             <th mat-header-cell *matHeaderCellDef> Evolution </th>
             <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button target="_blank"
-                    [disabled]="pokemon.evolutionUrls[selectedSiteName]==''"
+                    [attr.disabled]="pokemon.evolutionUrls[selectedSiteName]==''"
                     [href]="pokemon.evolutionUrls[selectedSiteName]">Evolution</a></td>
         </ng-container>
         <ng-container matColumnDef="location-link">
             <th mat-header-cell *matHeaderCellDef> Location </th>
             <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button [href]="pokemon.locationUrls[selectedSiteName]"
-                    [disabled]="pokemon.locationUrls[selectedSiteName]==''" target="_blank" color="primary">Location</a>
+                    [attr.disabled]="pokemon.locationUrls[selectedSiteName]==''" target="_blank" color="primary">Location</a>
             </td>
         </ng-container>
         <ng-container matColumnDef="effectiveness-link">
             <th mat-header-cell *matHeaderCellDef> Effectiveness </th>
             <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button
-                    [disabled]="pokemon.effectivenessUrls[selectedSiteName]==''"
+                    [attr.disabled]="pokemon.effectivenessUrls[selectedSiteName]==''"
                     [href]="pokemon.effectivenessUrls[selectedSiteName]" target="_blank"
                     color="accent">Effectiveness</a>
             </td>
@@ -77,12 +77,12 @@
         <ng-container matColumnDef="learnset-link">
             <th mat-header-cell *matHeaderCellDef> Moveset </th>
             <td mat-cell *matCellDef="let pokemon"> <a mat-raised-button
-                    [disabled]="pokemon.learnsetUrls[selectedSiteName]==''"
+                    [attr.disabled]="pokemon.learnsetUrls[selectedSiteName]==''"
                     [href]="pokemon.learnsetUrls[selectedSiteName]" target="_blank" color="warn">Learnset</a>
             </td>
         </ng-container>
-    </table>
-    <mat-paginator [length]="selectedGeneration.pokemonCount" [pageSize]="10" [pageSizeOptions]="[10,20, 50, 100]"
+    </mat-table>
+    <mat-paginator [length]="selectedGeneration?.pokemonCount" [pageSize]="10" [pageSizeOptions]="[10,20, 50, 100]"
         showFirstLastButtons>
     </mat-paginator>
 </div>
