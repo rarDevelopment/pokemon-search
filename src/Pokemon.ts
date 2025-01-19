@@ -1,7 +1,4 @@
 export class Pokemon {
-    number: number;
-    name: string;
-
-    constructor() {
-    }
+  number: number;
+  name: string;
 }

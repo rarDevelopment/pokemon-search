@@ -1,23 +1,39 @@
-table {
-  width: 100%;
+.pokemon-list {
+  text-align: center;
 }
 
-.container {
-  margin: 1em;
-}
-
-.title {
-  padding-left: 0.2em;
-}
-
-.loading {
-  padding-left: 0.2em;
+.error {
+  color: red;
 }
 
 .link-container {
   margin-bottom: 1em;
 }
+
+.link-button-container-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .link-button-container {
-  padding-right: 3px;
-  padding-bottom: 3px;
+  flex: 1 1 auto;
+  margin: 5px;
+}
+
+.count-container {
+  margin-bottom: 10px;
+}
+
+.dropdown-container {
+  margin-right: 5px;
+}
+
+.table-container {
+  max-width: 800px; /* Adjust the max-width as needed */
+  margin: 0 auto; /* Center the table */
+}
+
+.link-button {
+  background-color: black !important;
 }
