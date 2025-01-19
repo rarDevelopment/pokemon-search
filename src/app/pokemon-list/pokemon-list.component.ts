@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Generation } from '../Generation';
@@ -10,22 +11,25 @@ import { Site } from '../Site';
 import { PokeApiService } from '../poke-api.service';
 import { TemplateKeywords } from '../TemplateKeywords';
 import { TextFormat } from '../TextFormat';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatOption, MatSelect } from '@angular/material/select';
+import { MatFormField } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-pokemon-list',
   templateUrl: './pokemon-list.component.html',
-  styleUrls: ['./pokemon-list.component.css'],
+  styleUrls: ['./pokemon-list.component.scss'],
   imports: [
     CommonModule,
+    FormsModule,
     MatPaginator,
     MatFormField,
-    MatLabel,
-    MatSelect,
-    MatOption,
-    MatTable,
+    MatSelectModule,
+    MatTableModule,
+    MatInputModule,
+    MatButtonModule,
   ],
 })
 export class PokemonListComponent implements OnInit {
@@ -35,9 +39,9 @@ export class PokemonListComponent implements OnInit {
     'number',
     'name',
     'evolution-link',
-    'location-link',
-    'effectiveness-link',
-    'learnset-link',
+    // 'location-link',
+    // 'effectiveness-link',
+    // 'learnset-link',
   ];
   searchText: string = '';
   isLoading: boolean = false;
@@ -49,7 +53,7 @@ export class PokemonListComponent implements OnInit {
     Sites.Smogon,
     Sites.Serebii,
   ];
-  currentGen: number = 8;
+  currentGen: number = 9;
   generationNumbers: number[] = Array(this.currentGen);
   generations: Generation[] = [
     new Generation(1, 151),
@@ -58,8 +62,9 @@ export class PokemonListComponent implements OnInit {
     new Generation(4, 493),
     new Generation(5, 649),
     new Generation(6, 721),
-    new Generation(7, 807),
-    new Generation(8, 898),
+    new Generation(7, 809),
+    new Generation(8, 905),
+    new Generation(9, 1025),
   ];
 
   pokemonDataSource: MatTableDataSource<Pokemon> = new MatTableDataSource();
@@ -68,7 +73,7 @@ export class PokemonListComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort = new MatSort();
 
   selectedSiteName: string = Sites.Bulbapedia.name; //TODO: change this to be a parameter
-  selectedGenNumber: number = 8; //TODO: change this to be a parameter
+  selectedGenNumber: number = 9; //TODO: change this to be a parameter
   selectedGeneration: Generation | undefined;
   selectedSite: Site = Sites.Bulbapedia;
 
@@ -140,8 +145,7 @@ export class PokemonListComponent implements OnInit {
           let data = response;
           const pokemon = data.map((p) => {
             return {
-              imgUrl: `https://img.pokemondb.net/artwork/${p.name}.jpg`,
-              //imgUrl: `https://img.pokemondb.net/sprites/${TextFormat.GetPokemonDbSpriteGenNames(this.selectedGeneration.id)}/normal/${p.name}.png`, //GetPokemonDbSpriteGenNames
+              imgUrl: `https://img.pokemondb.net/sprites/home/normal/2x/avif/${p.name}.avif`,
               name: p.name,
               displayName: TextFormat.ToTitleCase(p.name),
               number: p.number,
@@ -332,7 +336,10 @@ export class PokemonListComponent implements OnInit {
         ),
       [Sites.PokemonDB.name]: Sites.PokemonDB.learnsetUrlTemplate
         .replace(TemplateKeywords.PokemonName, name)
-        .replace(TemplateKeywords.Generation, generationNumber?.toString() ?? ""),
+        .replace(
+          TemplateKeywords.Generation,
+          generationNumber?.toString() ?? ''
+        ),
       [Sites.Serebii.name]: serebiiUrl,
     };
   }
@@ -340,7 +347,7 @@ export class PokemonListComponent implements OnInit {
     return {
       [Sites.Bulbapedia.name]: Sites.Bulbapedia.typeChartUrl.replace(
         TemplateKeywords.Generation,
-        generationNumber?.toString() ?? ""
+        generationNumber?.toString() ?? ''
       ),
       [Sites.Smogon.name]: Sites.Smogon.typeChartUrl.replace(
         TemplateKeywords.Generation,
@@ -348,7 +355,7 @@ export class PokemonListComponent implements OnInit {
       ),
       [Sites.PokemonDB.name]: Sites.PokemonDB.typeChartUrl.replace(
         TemplateKeywords.Generation,
-        generationNumber?.toString() ?? ""
+        generationNumber?.toString() ?? ''
       ),
       [Sites.Serebii.name]: Sites.Serebii.typeChartUrl,
     };
