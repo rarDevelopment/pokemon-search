@@ -3,14 +3,14 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Generation } from '../Generation';
+import { Generation } from '../models/generation';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Pokemon } from '../../Pokemon';
-import { Sites } from '../Sites';
-import { Site } from '../Site';
-import { PokeApiService } from '../poke-api.service';
-import { TemplateKeywords } from '../TemplateKeywords';
-import { TextFormat } from '../TextFormat';
+import { Pokemon } from '../models/pokemon';
+import { Sites } from '../models/sites';
+import { Site } from '../models/site';
+import { PokeApiService } from '../services/poke-api.service';
+import { TemplateKeywords } from '../models/template-keywords';
+import { TextFormatters } from '../utils/text-formatters';
 import { MatFormField } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
@@ -137,7 +137,7 @@ export class PokemonListComponent implements OnInit {
         return {
           imgUrl: `https://img.pokemondb.net/sprites/home/normal/2x/avif/${p.name}.avif`,
           name: p.name,
-          displayName: TextFormat.ToTitleCase(p.name),
+          displayName: TextFormatters.ToTitleCase(p.name),
           number: p.number,
           evolutionUrls: this.buildEvolutionUrls(
             p.name,
@@ -205,7 +205,7 @@ export class PokemonListComponent implements OnInit {
     pokemonNumber: number,
     generationNumber?: number
   ) {
-    const serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
+    const serebiiIdentifier = TextFormatters.GetSerebiiPokemonIdentifier(
       name,
       pokemonNumber,
       generationNumber
@@ -214,7 +214,7 @@ export class PokemonListComponent implements OnInit {
       .replace(TemplateKeywords.PokemonName, serebiiIdentifier)
       .replace(
         TemplateKeywords.Generation,
-        TextFormat.GetSerebiiUrl(generationNumber)
+        TextFormatters.GetSerebiiUrl(generationNumber)
       );
     return {
       [Sites.Bulbapedia.name]: Sites.Bulbapedia.locationUrlTemplate.replace(
@@ -234,7 +234,7 @@ export class PokemonListComponent implements OnInit {
     pokemonNumber: number,
     generationNumber?: number
   ) {
-    const serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
+    const serebiiIdentifier = TextFormatters.GetSerebiiPokemonIdentifier(
       name,
       pokemonNumber,
       generationNumber
@@ -243,7 +243,7 @@ export class PokemonListComponent implements OnInit {
       .replace(TemplateKeywords.PokemonName, serebiiIdentifier)
       .replace(
         TemplateKeywords.Generation,
-        TextFormat.GetSerebiiUrl(generationNumber)
+        TextFormatters.GetSerebiiUrl(generationNumber)
       );
     return {
       [Sites.Bulbapedia.name]: Sites.Bulbapedia.evolutionUrlTemplate.replace(
@@ -254,7 +254,7 @@ export class PokemonListComponent implements OnInit {
         .replace(TemplateKeywords.PokemonName, name)
         .replace(
           TemplateKeywords.Generation,
-          TextFormat.GetSmogonLetters(generationNumber)
+          TextFormatters.GetSmogonLetters(generationNumber)
         ),
       [Sites.PokemonDB.name]: Sites.PokemonDB.evolutionUrlTemplate.replace(
         TemplateKeywords.PokemonName,
@@ -268,7 +268,7 @@ export class PokemonListComponent implements OnInit {
     pokemonNumber: number,
     generationNumber?: number
   ) {
-    const serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
+    const serebiiIdentifier = TextFormatters.GetSerebiiPokemonIdentifier(
       name,
       pokemonNumber,
       generationNumber
@@ -277,7 +277,7 @@ export class PokemonListComponent implements OnInit {
       .replace(TemplateKeywords.PokemonName, serebiiIdentifier)
       .replace(
         TemplateKeywords.Generation,
-        TextFormat.GetSerebiiUrl(generationNumber)
+        TextFormatters.GetSerebiiUrl(generationNumber)
       );
     return {
       [Sites.Bulbapedia.name]:
@@ -298,7 +298,7 @@ export class PokemonListComponent implements OnInit {
     pokemonNumber: number,
     generationNumber?: number
   ) {
-    const serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
+    const serebiiIdentifier = TextFormatters.GetSerebiiPokemonIdentifier(
       name,
       pokemonNumber,
       generationNumber
@@ -307,7 +307,7 @@ export class PokemonListComponent implements OnInit {
       .replace(TemplateKeywords.PokemonName, serebiiIdentifier)
       .replace(
         TemplateKeywords.Generation,
-        TextFormat.GetSerebiiUrl(generationNumber)
+        TextFormatters.GetSerebiiUrl(generationNumber)
       );
     let bulbaUrl = Sites.Bulbapedia.learnsetUrlTemplate.replace(
       TemplateKeywords.PokemonName,
@@ -318,7 +318,7 @@ export class PokemonListComponent implements OnInit {
       bulbaUrl = bulbaUrl.replace('#Learnset', '');
       bulbaUrl = bulbaUrl.replace(
         TemplateKeywords.Generation,
-        `/Generation_${TextFormat.GetRomanNumeral(
+        `/Generation_${TextFormatters.GetRomanNumeral(
           this.selectedGenNumber
         )}_learnset#By_leveling_up`
       );
@@ -331,7 +331,7 @@ export class PokemonListComponent implements OnInit {
         .replace(TemplateKeywords.PokemonName, name)
         .replace(
           TemplateKeywords.Generation,
-          TextFormat.GetSmogonLetters(generationNumber)
+          TextFormatters.GetSmogonLetters(generationNumber)
         ),
       [Sites.PokemonDB.name]: Sites.PokemonDB.learnsetUrlTemplate
         .replace(TemplateKeywords.PokemonName, name)
@@ -350,7 +350,7 @@ export class PokemonListComponent implements OnInit {
       ),
       [Sites.Smogon.name]: Sites.Smogon.typeChartUrl.replace(
         TemplateKeywords.Generation,
-        TextFormat.GetSmogonLetters(generationNumber)
+        TextFormatters.GetSmogonLetters(generationNumber)
       ),
       [Sites.PokemonDB.name]: Sites.PokemonDB.typeChartUrl.replace(
         TemplateKeywords.Generation,
@@ -363,15 +363,15 @@ export class PokemonListComponent implements OnInit {
     return {
       [Sites.Bulbapedia.name]: Sites.Bulbapedia.locationRegionUrl.replace(
         TemplateKeywords.Generation,
-        TextFormat.GetPokemonDbGenerationRegionNames(generationNumber)
+        TextFormatters.GetPokemonDbGenerationRegionNames(generationNumber)
       ),
       [Sites.Smogon.name]: Sites.Smogon.locationRegionUrl.replace(
         TemplateKeywords.Generation,
-        TextFormat.GetPokemonDbGenerationRegionNames(generationNumber)
+        TextFormatters.GetPokemonDbGenerationRegionNames(generationNumber)
       ),
       [Sites.PokemonDB.name]: Sites.PokemonDB.locationRegionUrl.replace(
         TemplateKeywords.Generation,
-        TextFormat.GetPokemonDbGenerationRegionNames(generationNumber)
+        TextFormatters.GetPokemonDbGenerationRegionNames(generationNumber)
       ),
       [Sites.Serebii.name]: Sites.Serebii.locationRegionUrl,
     };

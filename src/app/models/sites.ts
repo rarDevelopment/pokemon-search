@@ -1,5 +1,5 @@
-import { Site } from './Site';
-import { TemplateKeywords } from './TemplateKeywords';
+import { Site } from './site';
+import { TemplateKeywords } from './template-keywords';
 
 export class Sites {
   static Bulbapedia: Site = new Site(

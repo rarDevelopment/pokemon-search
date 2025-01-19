@@ -1,4 +1,4 @@
-import { TextFormat } from './TextFormat';
+import { TextFormatters } from '../utils/text-formatters';
 
 export class Generation {
   id: number;
@@ -12,8 +12,8 @@ export class Generation {
     this.id = id;
     this.pokemonCount = pokemonCount;
     this.name = `Generation ${id}`;
-    this.romanNumeral = TextFormat.GetRomanNumeral(id);
-    this.gameLetters = TextFormat.GetSmogonLetters(id);
-    this.games = TextFormat.GetGameNames(id);
+    this.romanNumeral = TextFormatters.GetRomanNumeral(id);
+    this.gameLetters = TextFormatters.GetSmogonLetters(id);
+    this.games = TextFormatters.GetGameNames(id);
   }
 }

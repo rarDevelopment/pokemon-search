@@ -1,4 +1,4 @@
-export class TextFormat {
+export class TextFormatters {
   static ToTitleCase(text: string) {
     text = text
       .toLowerCase()
