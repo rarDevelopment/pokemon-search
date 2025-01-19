@@ -71,6 +71,13 @@
       </mat-form-field>
     </form>
     <div class="table-container">
+      <mat-paginator
+        [length]="selectedGeneration?.pokemonCount"
+        [pageSize]="10"
+        [pageSizeOptions]="[10, 20, 50, 100]"
+        showFirstLastButtons
+      >
+      </mat-paginator>
       <table
         mat-table
         [dataSource]="pokemonDataSource"
@@ -172,13 +179,13 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
       </table>
+      <mat-paginator
+        [length]="selectedGeneration?.pokemonCount"
+        [pageSize]="10"
+        [pageSizeOptions]="[10, 20, 50, 100]"
+        showFirstLastButtons
+      >
+      </mat-paginator>
     </div>
-    <mat-paginator
-      [length]="selectedGeneration?.pokemonCount"
-      [pageSize]="10"
-      [pageSizeOptions]="[10, 20, 50, 100]"
-      showFirstLastButtons
-    >
-    </mat-paginator>
   </div>
 </div>
