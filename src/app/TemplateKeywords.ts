@@ -1,4 +1,4 @@
 export enum TemplateKeywords {
-    PokemonName = "{{POKEMON_NAME}}",
-    Generation = "{{GENERATION}}",
+  PokemonName = '{{POKEMON_NAME}}',
+  Generation = '{{GENERATION}}',
 }

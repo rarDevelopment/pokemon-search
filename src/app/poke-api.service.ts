@@ -1,46 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Pokedex } from "pokeapi-js-wrapper";
+import { Pokedex } from 'pokeapi-js-wrapper';
 import { Pokemon } from '../Pokemon';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class PokeApiService {
+  private api: Pokedex;
 
-    api: Pokedex;
-    pokemon: Pokemon[];
+  constructor() {
+    this.api = new Pokedex();
+  }
 
-    constructor() {
-        this.api = new Pokedex();
-        this.pokemon = new Array<Pokemon>();
-    }
+  async getAllPokemon(pokemonCount: number) {
+    const interval = {
+      limit: pokemonCount,
+      offset: 0,
+    };
+    const response = await this.api.getPokemonSpeciesList(interval);
 
-    getAllPokemon(pokemonCount: number) {
-        const interval = {
-            limit: pokemonCount,
-            offset: 0
-        };
-        return this.api.getPokemonSpeciesList(interval).then((response) => {
-            this.pokemon = response.results.map(p => {
-                let urlSegments = p.url.split('/');
-                let number = urlSegments[urlSegments.length - 2];
-                return this.buildPokemonFromData(p.name, parseInt(number));
-            });
-            console.log("end result", this.pokemon);
-            return this.pokemon;
-        });
-    }
-    getPokemon(name: string) {
-        return this.api.getPokemonByName(name)
-            .then(function (response) {
-                console.log("found pokemon for name" + name, response);
-            });
-    }
+    const pokemon = response.results.map((p) => {
+      const urlSegments = p.url.split('/');
+      const number = urlSegments[urlSegments.length - 2];
+      return this.buildPokemonFromData(p.name, parseInt(number));
+    });
+    return pokemon;
+  }
 
-    buildPokemonFromData(name: string, number: number) {
-        return {
-            name: name,
-            number: number
-        } as Pokemon;
-    }
+  buildPokemonFromData(name: string, number: number) {
+    return {
+      name: name,
+      number: number,
+    } as Pokemon;
+  }
 }

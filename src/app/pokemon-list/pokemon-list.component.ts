@@ -34,15 +34,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class PokemonListComponent implements OnInit {
   pokemon: Pokemon[] = [];
-  columnsToDisplay: string[] = [
-    'image',
-    'number',
-    'name',
-    'evolution-link',
-    // 'location-link',
-    // 'effectiveness-link',
-    // 'learnset-link',
-  ];
+  columnsToDisplay: string[] = ['image', 'number', 'name', 'evolution-link'];
   searchText: string = '';
   isLoading: boolean = false;
   isError: boolean = false;
@@ -53,8 +45,6 @@ export class PokemonListComponent implements OnInit {
     Sites.Smogon,
     Sites.Serebii,
   ];
-  currentGen: number = 9;
-  generationNumbers: number[] = Array(this.currentGen);
   generations: Generation[] = [
     new Generation(1, 151),
     new Generation(2, 251),
@@ -66,16 +56,17 @@ export class PokemonListComponent implements OnInit {
     new Generation(8, 905),
     new Generation(9, 1025),
   ];
+  currentGen: number = this.generations[this.generations.length - 1].id;
 
   pokemonDataSource: MatTableDataSource<Pokemon> = new MatTableDataSource();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator =
     new MatPaginator(null, null, null);
   @ViewChild(MatSort, { static: true }) sort: MatSort = new MatSort();
 
-  selectedSiteName: string = Sites.Bulbapedia.name; //TODO: change this to be a parameter
-  selectedGenNumber: number = 9; //TODO: change this to be a parameter
-  selectedGeneration: Generation | undefined;
   selectedSite: Site = Sites.Bulbapedia;
+  selectedSiteName: string = this.selectedSite.name;
+  selectedGenNumber: number = this.generations[this.generations.length - 1].id;
+  selectedGeneration: Generation | undefined;
 
   constructor(
     private pokeApiService: PokeApiService,
@@ -86,16 +77,15 @@ export class PokemonListComponent implements OnInit {
   ngOnInit() {
     this.loadPokemon();
     this.route.queryParamMap.subscribe((params) => {
-      let urlGen = params.get('gen');
+      const urlGen = params.get('gen');
       if (urlGen) {
-        let genNumber = parseInt(urlGen);
+        const genNumber = parseInt(urlGen);
         if (genNumber) {
           this.selectedGenNumber = genNumber;
           this.loadPokemon();
         }
       }
-      let urlSite = params.get('site');
-      console.log('param', urlSite);
+      const urlSite = params.get('site');
       if (urlSite) {
         if (
           Sites.AllSites.find(
@@ -109,7 +99,7 @@ export class PokemonListComponent implements OnInit {
     });
   }
 
-  navigateToParams(queryParams) {
+  navigateToParams(queryParams: { gen?: number; site?: string }) {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: queryParams,
@@ -119,69 +109,78 @@ export class PokemonListComponent implements OnInit {
   }
 
   navigateToGen(gen: number) {
-    let queryParams = {
+    const queryParams = {
       gen: gen,
     };
     this.navigateToParams(queryParams);
   }
 
   navigateToSite(site: string) {
-    let queryParams = {
+    const queryParams = {
       site: site,
     };
     this.navigateToParams(queryParams);
   }
 
-  loadPokemon() {
+  async loadPokemon() {
     this.selectedSite = this.getSiteByName(this.selectedSiteName);
     this.selectedGeneration = this.getGenerationForNumber(
       this.selectedGenNumber
     );
     if (this.selectedSite && this.selectedGeneration) {
       this.isLoading = true;
-      this.pokeApiService
-        .getAllPokemon(this.selectedGeneration.pokemonCount)
-        .then((response) => {
-          let data = response;
-          const pokemon = data.map((p) => {
-            return {
-              imgUrl: `https://img.pokemondb.net/sprites/home/normal/2x/avif/${p.name}.avif`,
-              name: p.name,
-              displayName: TextFormat.ToTitleCase(p.name),
-              number: p.number,
-              evolutionUrls: this.buildEvolutionUrls(
-                p.name,
-                p.number,
-                this.selectedGeneration?.id
-              ),
-              locationUrls: this.buildLocationUrls(
-                p.name,
-                p.number,
-                this.selectedGeneration?.id
-              ),
-              effectivenessUrls: this.buildEffectivenessUrls(
-                p.name,
-                p.number,
-                this.selectedGeneration?.id
-              ),
-              learnsetUrls: this.buildLearnsetUrls(
-                p.name,
-                p.number,
-                this.selectedGeneration?.id
-              ),
-            } as Pokemon;
-          });
-          this.pokemonDataSource = new MatTableDataSource(pokemon);
-          this.pokemonDataSource.paginator = this.paginator;
-          this.pokemonDataSource.sort = this.sort;
-          this.isLoading = false;
-        });
+      const data = await this.pokeApiService.getAllPokemon(
+        this.selectedGeneration.pokemonCount
+      );
+
+      const pokemon = data.map((p) => {
+        return {
+          imgUrl: `https://img.pokemondb.net/sprites/home/normal/2x/avif/${p.name}.avif`,
+          name: p.name,
+          displayName: TextFormat.ToTitleCase(p.name),
+          number: p.number,
+          evolutionUrls: this.buildEvolutionUrls(
+            p.name,
+            p.number,
+            this.selectedGeneration?.id
+          ),
+          locationUrls: this.buildLocationUrls(
+            p.name,
+            p.number,
+            this.selectedGeneration?.id
+          ),
+          effectivenessUrls: this.buildEffectivenessUrls(
+            p.name,
+            p.number,
+            this.selectedGeneration?.id
+          ),
+          learnsetUrls: this.buildLearnsetUrls(
+            p.name,
+            p.number,
+            this.selectedGeneration?.id
+          ),
+        } as Pokemon;
+      });
+      this.pokemonDataSource = new MatTableDataSource(pokemon);
+      this.pokemonDataSource.filterPredicate = this.filterPredicate;
+      this.pokemonDataSource.paginator = this.paginator;
+      this.pokemonDataSource.sort = this.sort;
+      this.isLoading = false;
     } else {
       this.isError = true;
       console.error(
         `Generation:\nNumber: ${this.selectedGenNumber}\nGeneration:${this.selectedGeneration}`
       );
     }
+  }
+
+  filterPredicate(data: Pokemon, filter: string) {
+    const nameMatch = data.name.toLowerCase().includes(filter);
+    const numberMatch = data.number
+      .toString()
+      .replace(/^0+/, '')
+      .includes(filter.replace(/^0+/, ''));
+    return nameMatch || numberMatch;
   }
 
   applyFilter(event: Event) {
@@ -206,12 +205,12 @@ export class PokemonListComponent implements OnInit {
     pokemonNumber: number,
     generationNumber?: number
   ) {
-    let serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
+    const serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
       name,
       pokemonNumber,
       generationNumber
     );
-    let serebiiUrl = Sites.Serebii.effectivenessUrlTemplate
+    const serebiiUrl = Sites.Serebii.effectivenessUrlTemplate
       .replace(TemplateKeywords.PokemonName, serebiiIdentifier)
       .replace(
         TemplateKeywords.Generation,
@@ -235,12 +234,12 @@ export class PokemonListComponent implements OnInit {
     pokemonNumber: number,
     generationNumber?: number
   ) {
-    let serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
+    const serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
       name,
       pokemonNumber,
       generationNumber
     );
-    let serebiiUrl = Sites.Serebii.effectivenessUrlTemplate
+    const serebiiUrl = Sites.Serebii.effectivenessUrlTemplate
       .replace(TemplateKeywords.PokemonName, serebiiIdentifier)
       .replace(
         TemplateKeywords.Generation,
@@ -269,12 +268,12 @@ export class PokemonListComponent implements OnInit {
     pokemonNumber: number,
     generationNumber?: number
   ) {
-    let serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
+    const serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
       name,
       pokemonNumber,
       generationNumber
     );
-    let serebiiUrl = Sites.Serebii.effectivenessUrlTemplate
+    const serebiiUrl = Sites.Serebii.effectivenessUrlTemplate
       .replace(TemplateKeywords.PokemonName, serebiiIdentifier)
       .replace(
         TemplateKeywords.Generation,
@@ -299,12 +298,12 @@ export class PokemonListComponent implements OnInit {
     pokemonNumber: number,
     generationNumber?: number
   ) {
-    let serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
+    const serebiiIdentifier = TextFormat.GetSerebiiPokemonIdentifier(
       name,
       pokemonNumber,
       generationNumber
     );
-    let serebiiUrl = Sites.Serebii.effectivenessUrlTemplate
+    const serebiiUrl = Sites.Serebii.effectivenessUrlTemplate
       .replace(TemplateKeywords.PokemonName, serebiiIdentifier)
       .replace(
         TemplateKeywords.Generation,
@@ -378,21 +377,3 @@ export class PokemonListComponent implements OnInit {
     };
   }
 }
-
-/*
-
-Thanks to Mason <3
-
-Kanto: 151
-Johto: 251
-Hoenn: 386
-Sinnoh: 493
-Unova: 649
-Kalos: 721
-Alola: 802
-Ultra Alola: 807
-Let’s Go Kanto: 809
-Galar: 890
-Isle of Armor: 893
-
-*/
