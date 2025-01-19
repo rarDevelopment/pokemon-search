@@ -45,6 +45,8 @@ export class PokemonListComponent implements OnInit {
     Sites.Smogon,
     Sites.Serebii,
   ];
+
+  // TODO: there's gotta be a better way
   generations: Generation[] = [
     new Generation(1, 151),
     new Generation(2, 251),

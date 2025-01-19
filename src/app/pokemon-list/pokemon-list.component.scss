@@ -2,6 +2,17 @@
   text-align: center;
 }
 
+img {
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 100px;
+  transition: transform 0.3s ease-in-out; /* Add transition for smooth animation */
+}
+
+a img:hover {
+  transform: translateY(-5px);
+}
+
 .error {
   color: red;
 }
@@ -36,6 +47,13 @@
 
 .link-button {
   background-color: black !important;
+}
+
+.number-cell {
+  max-width: 45px !important;
+}
+.smaller-table-cell {
+  padding: 4px 8px; /* Adjust the padding as needed */
 }
 
 @media screen and (min-width: 0px) and (max-width: 767px) {

@@ -79,18 +79,40 @@
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let pokemon">
-            <img width="50" height="50" [src]="pokemon.imgUrl" />
+            <a [href]="pokemon.imgUrl" target="_blank"
+              ><img [src]="pokemon.imgUrl"
+            /></a>
           </td>
         </ng-container>
         <ng-container matColumnDef="number">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Number</th>
-          <td mat-cell *matCellDef="let pokemon">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            class="smaller-table-cell number-cell"
+          >
+            #
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let pokemon"
+            class="smaller-table-cell number-cell"
+          >
             {{ pokemon.number.toString().padStart(3, "0") }}
           </td>
         </ng-container>
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-          <td mat-cell *matCellDef="let pokemon">{{ pokemon.displayName }}</td>
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            class="smaller-table-cell"
+          >
+            Name
+          </th>
+          <td mat-cell *matCellDef="let pokemon" class="smaller-table-cell">
+            {{ pokemon.displayName }}
+          </td>
         </ng-container>
         <ng-container matColumnDef="evolution-link">
           <th mat-header-cell *matHeaderCellDef></th>
@@ -128,7 +150,7 @@
                   [href]="pokemon.learnsetUrls[selectedSiteName]"
                   target="_blank"
                   color="warn"
-                  >Learnset</a
+                  >Moves</a
                 >
               </div>
               <div class="link-button-container">
@@ -141,7 +163,7 @@
                   [href]="pokemon.effectivenessUrls[selectedSiteName]"
                   target="_blank"
                   color="accent"
-                  >Effectiveness</a
+                  >Type Fx</a
                 >
               </div>
             </div>
