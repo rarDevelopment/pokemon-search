@@ -13,7 +13,7 @@ import { TemplateKeywords } from '../models/template-keywords';
 import { TextFormatters } from '../utils/text-formatters';
 import { MatFormField } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -22,15 +22,14 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './pokemon-list.component.html',
   styleUrls: ['./pokemon-list.component.scss'],
   imports: [
-    CommonModule,
     FormsModule,
     MatPaginator,
     MatFormField,
     MatSelectModule,
     MatTableModule,
     MatInputModule,
-    MatButtonModule,
-  ],
+    MatButtonModule
+],
 })
 export class PokemonListComponent implements OnInit {
   pokemon: Pokemon[] = [];

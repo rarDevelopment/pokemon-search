@@ -8,177 +8,187 @@
         mat-stroked-button
         target="_blank"
         >Type Chart</a
-      >
-      &nbsp;
-      <a
+        >
+        &nbsp;
+        <a
         [href]="
           buildLocationRegionUrl(selectedGeneration?.id)[selectedSite.name]
         "
-        mat-stroked-button
-        target="_blank"
-        >Locations by Region (Pokémon DB)</a
-      >
-    </div>
-    <form class="parameter-form">
-      <div class="dropdown-container">
-        <mat-form-field appearance="fill">
-          <mat-label>Generation</mat-label>
-          <mat-select
-            [(value)]="selectedGenNumber"
-            (selectionChange)="navigateToGen(selectedGenNumber)"
+          mat-stroked-button
+          target="_blank"
+          >Locations by Region (Pokémon DB)</a
           >
-            <mat-option *ngFor="let gen of generations" [value]="gen.id">
-              {{ gen.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="dropdown-container">
-        <mat-form-field appearance="fill">
-          <mat-label>Site</mat-label>
-          <mat-select
-            [(value)]="selectedSiteName"
-            (selectionChange)="navigateToSite(selectedSiteName)"
-          >
-            <mat-option *ngFor="let site of availableSites" [value]="site.name">
-              {{ site.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </form>
+        </div>
+        <form class="parameter-form">
+          <div class="dropdown-container">
+            <mat-form-field appearance="fill">
+              <mat-label>Generation</mat-label>
+              <mat-select
+                [(value)]="selectedGenNumber"
+                (selectionChange)="navigateToGen(selectedGenNumber)"
+                >
+                @for (gen of generations; track gen) {
+                  <mat-option [value]="gen.id">
+                    {{ gen.name }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="dropdown-container">
+            <mat-form-field appearance="fill">
+              <mat-label>Site</mat-label>
+              <mat-select
+                [(value)]="selectedSiteName"
+                (selectionChange)="navigateToSite(selectedSiteName)"
+                >
+                @for (site of availableSites; track site) {
+                  <mat-option [value]="site.name">
+                    {{ site.name }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </form>
 
-    <div class="count-container">
-      <div *ngIf="isLoading">Loading...</div>
-      <div *ngIf="!isLoading && !isError">
-        {{ selectedGeneration?.pokemonCount }} Pokémon found
-      </div>
-      <div *ngIf="isError" class="error">Error loading Pokémon</div>
-    </div>
+        <div class="count-container">
+          @if (isLoading) {
+            <div>Loading...</div>
+          }
+          @if (!isLoading && !isError) {
+            <div>
+              {{ selectedGeneration?.pokemonCount }} Pokémon found
+            </div>
+          }
+          @if (isError) {
+            <div class="error">Error loading Pokémon</div>
+          }
+        </div>
 
-    <form class="search-form">
-      <mat-form-field class="search-field">
-        <mat-label>Name or Number</mat-label>
-        <input
-          matInput
-          name="search"
-          (keyup)="applyFilter($event)"
-          placeholder="Name or Number"
-          #input
-          type="search"
-          autofocus
-        />
-      </mat-form-field>
-    </form>
-    <div class="table-container">
-      <mat-paginator
-        [length]="selectedGeneration?.pokemonCount"
-        [pageSize]="10"
-        [pageSizeOptions]="[10, 20, 50, 100]"
-        showFirstLastButtons
-      >
-      </mat-paginator>
-      <table
-        mat-table
-        [dataSource]="pokemonDataSource"
-        class="mat-elevation-z8"
-      >
-        <ng-container matColumnDef="image">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let pokemon">
-            <a [href]="pokemon.imgUrl" target="_blank"
-              ><img [src]="pokemon.imgUrl"
-            /></a>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="number">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            mat-sort-header
-            class="smaller-table-cell number-cell"
-          >
-            #
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let pokemon"
-            class="smaller-table-cell number-cell"
-          >
-            {{ pokemon.number.toString().padStart(3, "0") }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="name">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            mat-sort-header
-            class="smaller-table-cell"
-          >
-            Name
-          </th>
-          <td mat-cell *matCellDef="let pokemon" class="smaller-table-cell">
-            {{ pokemon.displayName }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="evolution-link">
-          <th mat-header-cell *matHeaderCellDef class="smaller-table-cell"></th>
-          <td mat-cell *matCellDef="let pokemon" class="smaller-table-cell">
-            <div class="link-button-container-wrapper">
-              <div class="link-button-container">
-                <a
-                  mat-flat-button
-                  class="link-button"
-                  target="_blank"
+        <form class="search-form">
+          <mat-form-field class="search-field">
+            <mat-label>Name or Number</mat-label>
+            <input
+              matInput
+              name="search"
+              (keyup)="applyFilter($event)"
+              placeholder="Name or Number"
+              #input
+              type="search"
+              autofocus
+              />
+            </mat-form-field>
+          </form>
+          <div class="table-container">
+            <mat-paginator
+              [length]="selectedGeneration?.pokemonCount"
+              [pageSize]="10"
+              [pageSizeOptions]="[10, 20, 50, 100]"
+              showFirstLastButtons
+              >
+            </mat-paginator>
+            <table
+              mat-table
+              [dataSource]="pokemonDataSource"
+              class="mat-elevation-z8"
+              >
+              <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let pokemon">
+                  <a [href]="pokemon.imgUrl" target="_blank"
+                    ><img [src]="pokemon.imgUrl"
+                  /></a>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="number">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="smaller-table-cell number-cell"
+                  >
+                  #
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let pokemon"
+                  class="smaller-table-cell number-cell"
+                  >
+                  {{ pokemon.number.toString().padStart(3, "0") }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="smaller-table-cell"
+                  >
+                  Name
+                </th>
+                <td mat-cell *matCellDef="let pokemon" class="smaller-table-cell">
+                  {{ pokemon.displayName }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="evolution-link">
+                <th mat-header-cell *matHeaderCellDef class="smaller-table-cell"></th>
+                <td mat-cell *matCellDef="let pokemon" class="smaller-table-cell">
+                  <div class="link-button-container-wrapper">
+                    <div class="link-button-container">
+                      <a
+                        mat-flat-button
+                        class="link-button"
+                        target="_blank"
                   [attr.disabled]="
                     pokemon.evolutionUrls[selectedSiteName] == ''
                   "
-                  [href]="pokemon.evolutionUrls[selectedSiteName]"
-                  >Evolution
-                </a>
-              </div>
-              <div class="link-button-container">
-                <a
-                  mat-flat-button
-                  class="link-button"
-                  [href]="pokemon.locationUrls[selectedSiteName]"
-                  [attr.disabled]="pokemon.locationUrls[selectedSiteName] == ''"
-                  target="_blank"
-                  color="primary"
-                  >Location</a
-                >
-              </div>
+                        [href]="pokemon.evolutionUrls[selectedSiteName]"
+                        >Evolution
+                      </a>
+                    </div>
+                    <div class="link-button-container">
+                      <a
+                        mat-flat-button
+                        class="link-button"
+                        [href]="pokemon.locationUrls[selectedSiteName]"
+                        [attr.disabled]="pokemon.locationUrls[selectedSiteName] == ''"
+                        target="_blank"
+                        color="primary"
+                        >Location</a
+                        >
+                      </div>
 
-              <div class="link-button-container">
-                <a
-                  mat-flat-button
-                  class="link-button"
-                  [attr.disabled]="pokemon.learnsetUrls[selectedSiteName] == ''"
-                  [href]="pokemon.learnsetUrls[selectedSiteName]"
-                  target="_blank"
-                  color="warn"
-                  >Moves</a
-                >
-              </div>
-              <div class="link-button-container">
-                <a
-                  mat-flat-button
-                  class="link-button"
+                      <div class="link-button-container">
+                        <a
+                          mat-flat-button
+                          class="link-button"
+                          [attr.disabled]="pokemon.learnsetUrls[selectedSiteName] == ''"
+                          [href]="pokemon.learnsetUrls[selectedSiteName]"
+                          target="_blank"
+                          color="warn"
+                          >Moves</a
+                          >
+                        </div>
+                        <div class="link-button-container">
+                          <a
+                            mat-flat-button
+                            class="link-button"
                   [attr.disabled]="
                     pokemon.effectivenessUrls[selectedSiteName] == ''
                   "
-                  [href]="pokemon.effectivenessUrls[selectedSiteName]"
-                  target="_blank"
-                  color="accent"
-                  >Type Fx</a
-                >
+                            [href]="pokemon.effectivenessUrls[selectedSiteName]"
+                            target="_blank"
+                            color="accent"
+                            >Type Fx</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+                  </table>
+                </div>
               </div>
             </div>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
-      </table>
-    </div>
-  </div>
-</div>
