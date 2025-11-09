@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "update-angular": "ng update @angular/core @angular/cli @angular/material"
+    "update-angular": "ng update @angular/core @angular/cli @angular/material && rm -rf node_modules package-lock.json && npm install"
   },
   "private": true,
   "dependencies": {
