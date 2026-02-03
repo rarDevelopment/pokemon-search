@@ -1,0 +1,80 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=sha,prefix=
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Vultr VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DOCKERDEPLOY_HOST }}
+          port: ${{ secrets.DOCKERDEPLOY_HOST_PORT }}
+          username: ${{ secrets.DOCKERDEPLOY_HOST_USER }}
+          key: ${{ secrets.DOCKERDEPLOY_PK }}
+          script: |
+            # Login to GitHub Container Registry
+            echo ${{ secrets.PUBLISH_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            # Pull the latest image
+            docker pull ghcr.io/rardevelopment/pokemon-search:latest
+            
+            # Stop and remove existing container if it exists
+            docker stop pokemon-search 2>/dev/null || true
+            docker rm pokemon-search 2>/dev/null || true
+            
+            # Run the new container
+            docker run -d \
+              --name pokemon-search \
+              --restart unless-stopped \
+              --network caddy-network \
+              ghcr.io/rardevelopment/pokemon-search:latest
+            
+            # Cleanup old images
+            docker image prune -f
