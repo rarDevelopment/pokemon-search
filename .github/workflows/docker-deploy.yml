@@ -52,7 +52,7 @@ jobs:
 
     steps:
       - name: Deploy
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.DOCKERDEPLOY_HOST }}
           port: ${{ secrets.DOCKERDEPLOY_HOST_PORT }}
