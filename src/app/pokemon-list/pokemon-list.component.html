@@ -4,7 +4,7 @@
   <div class="container">
     <div class="link-container">
       <a
-        [href]="buildTypeChartUrls(selectedGeneration?.id)[selectedSite.name]"
+        [href]="buildTypeChartUrls($safeNavigationMigration(selectedGeneration?.id))[selectedSite.name]"
         mat-stroked-button
         target="_blank"
         >Type Chart</a
@@ -12,7 +12,7 @@
         &nbsp;
         <a
         [href]="
-          buildLocationRegionUrl(selectedGeneration?.id)[selectedSite.name]
+          buildLocationRegionUrl($safeNavigationMigration(selectedGeneration?.id))[selectedSite.name]
         "
           mat-stroked-button
           target="_blank"
@@ -82,7 +82,7 @@
           </form>
           <div class="table-container">
             <mat-paginator
-              [length]="selectedGeneration?.pokemonCount"
+              [length]="$safeNavigationMigration(selectedGeneration?.pokemonCount)"
               [pageSize]="10"
               [pageSizeOptions]="[10, 20, 50, 100]"
               showFirstLastButtons
