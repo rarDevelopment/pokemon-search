@@ -61,8 +61,7 @@ export class PokemonListComponent implements OnInit {
   currentGen: number = this.generations[this.generations.length - 1].id;
 
   pokemonDataSource: MatTableDataSource<Pokemon> = new MatTableDataSource();
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator =
-    new MatPaginator(null, null, null);
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort = new MatSort();
 
   selectedSite: Site = Sites.Bulbapedia;
